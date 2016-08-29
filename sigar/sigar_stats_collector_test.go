@@ -120,6 +120,8 @@ var _ = Describe("sigarStatsCollector", func() {
 			fakeSigar.FileSystemUsage = sigar.FileSystemUsage{
 				Total:     100,
 				Used:      80,
+				Free:      20,
+				Avail:     15,
 				Files:     1200,
 				FreeFiles: 800,
 			}
@@ -129,7 +131,7 @@ var _ = Describe("sigarStatsCollector", func() {
 
 			Expect(fakeSigar.FileSystemUsagePath).To(Equal("/fake-mount-path"))
 
-			Expect(stats.DiskUsage.Total).To(Equal(uint64(100)))
+			Expect(stats.DiskUsage.Total).To(Equal(uint64(95)))
 			Expect(stats.DiskUsage.Used).To(Equal(uint64(80)))
 			Expect(stats.InodeUsage.Total).To(Equal(uint64(1200)))
 			Expect(stats.InodeUsage.Used).To(Equal(uint64(400)))

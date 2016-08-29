@@ -101,7 +101,10 @@ func (s *sigarStatsCollector) GetDiskStats(mountedPath string) (stats boshstats.
 		return
 	}
 
-	stats.DiskUsage.Total = fsUsage.Total
+	// Free may only be allocated by privileged processes
+	// Only Avail are available to unprivileged user
+	reserved := fsUsage.Free - fsUsage.Avail
+	stats.DiskUsage.Total = fsUsage.Total - reserved
 	stats.DiskUsage.Used = fsUsage.Used
 	stats.InodeUsage.Total = fsUsage.Files
 	stats.InodeUsage.Used = fsUsage.Files - fsUsage.FreeFiles
